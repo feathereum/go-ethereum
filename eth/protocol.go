@@ -29,6 +29,7 @@ import (
 )
 
 // Constants to match up protocol versions and messages
+// TODO protocol id can be changed
 const (
 	eth62 = 62
 	eth63 = 63

@@ -20,6 +20,7 @@ import (
 	"fmt"
 )
 
+// TODO change version
 const (
 	VersionMajor = 1        // Major version component of the current release
 	VersionMinor = 8        // Minor version component of the current release

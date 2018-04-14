@@ -56,6 +56,7 @@ type trustedCheckpoint struct {
 }
 
 var (
+	// TODO change checkpoint
 	mainnetCheckpoint = trustedCheckpoint{
 		name:          "mainnet",
 		sectionIdx:    161,
