@@ -33,17 +33,19 @@ import (
 	"github.com/feathereum/go-feathereum/params"
 )
 
-// DefaultConfig contains default settings for use on the Ethereum main net.
+// DefaultConfig contains default settings for use on the Feathereum main net.
 var DefaultConfig = Config{
-	SyncMode: downloader.FastSync,
+	// TODO Change it to FastSync after feathereum stabilized
+	SyncMode: downloader.FullSync,
 	Ethash: ethash.Config{
+		// TODO maybe we should change directory?
 		CacheDir:       "ethash",
 		CachesInMem:    2,
 		CachesOnDisk:   3,
 		DatasetsInMem:  1,
 		DatasetsOnDisk: 2,
 	},
-	NetworkId:     1,
+	NetworkId:     548743587354,
 	LightPeers:    100,
 	DatabaseCache: 768,
 	TrieCache:     256,
