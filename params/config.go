@@ -54,7 +54,7 @@ var (
 		EIP150Hash:          common.HexToHash("0x2b308d2e89c82805ec11a399f196dd3ba3e3adcafa53f8c30287a7f5cbbf0895"),	// Dummy hash
 		EIP155Block:         big.NewInt(10),
 		EIP158Block:         big.NewInt(10),
-		ByzantiumBlock:      big.NewInt(1700000),
+		ByzantiumBlock:      big.NewInt(20),
 		ConstantinopleBlock: nil,
 		Ethash:              new(EthashConfig),
 	}
@@ -69,7 +69,7 @@ var (
 		EIP150Hash:          common.HexToHash("0x7e862022575e45e6a2ed4b393f3ae152e84fda8874a5c51d4112e17a3cf628d0"),	// Dummy hash
 		EIP155Block:         big.NewInt(3),
 		EIP158Block:         big.NewInt(3),
-		ByzantiumBlock:      big.NewInt(1035301),
+		ByzantiumBlock:      big.NewInt(5),
 		ConstantinopleBlock: nil,
 		Clique: &CliqueConfig{
 			Period: 15,
