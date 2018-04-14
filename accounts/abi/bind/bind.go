@@ -28,7 +28,7 @@ import (
 	"text/template"
 	"unicode"
 
-	"github.com/ethereum/go-ethereum/accounts/abi"
+	"github.com/feathereum/go-feathereum/accounts/abi"
 	"golang.org/x/tools/imports"
 )
 

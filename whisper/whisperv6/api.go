@@ -24,12 +24,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/p2p/discover"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/feathereum/go-feathereum/common"
+	"github.com/feathereum/go-feathereum/common/hexutil"
+	"github.com/feathereum/go-feathereum/crypto"
+	"github.com/feathereum/go-feathereum/log"
+	"github.com/feathereum/go-feathereum/p2p/discover"
+	"github.com/feathereum/go-feathereum/rpc"
 )
 
 const (

@@ -21,8 +21,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/feathereum/go-feathereum/common"
+	"github.com/feathereum/go-feathereum/rpc"
 )
 
 func TestUnmarshalJSONNewFilterArgs(t *testing.T) {

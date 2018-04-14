@@ -20,7 +20,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/ethereum/go-ethereum/p2p/discover"
+	"github.com/feathereum/go-feathereum/p2p/discover"
 )
 
 // Simulation provides a framework for running actions in a simulated network
