@@ -62,19 +62,19 @@ import (
 )
 
 var (
-	// Files that end up in the geth*.zip archive.
+	// Files that end up in the gfeath*.zip archive.
 	gethArchiveFiles = []string{
 		"COPYING",
-		executablePath("geth"),
+		executablePath("gfeath"),
 	}
 
-	// Files that end up in the geth-alltools*.zip archive.
+	// Files that end up in the gfeath-alltools*.zip archive.
 	allToolsArchiveFiles = []string{
 		"COPYING",
 		executablePath("abigen"),
 		executablePath("bootnode"),
 		executablePath("evm"),
-		executablePath("geth"),
+		executablePath("gfeath"),
 		executablePath("puppeth"),
 		executablePath("rlpdump"),
 		executablePath("swarm"),
@@ -89,15 +89,15 @@ var (
 		},
 		{
 			Name:        "bootnode",
-			Description: "Ethereum bootnode.",
+			Description: "Fethereum bootnode.",
 		},
 		{
 			Name:        "evm",
 			Description: "Developer utility version of the EVM (Ethereum Virtual Machine) that is capable of running bytecode snippets within a configurable environment and execution mode.",
 		},
 		{
-			Name:        "geth",
-			Description: "Ethereum CLI client.",
+			Name:        "gfeath",
+			Description: "Fethereum CLI client.",
 		},
 		{
 			Name:        "puppeth",
@@ -368,8 +368,8 @@ func doArchive(cmdline []string) {
 	var (
 		env      = build.Env()
 		base     = archiveBasename(*arch, env)
-		geth     = "geth-" + base + ext
-		alltools = "geth-alltools-" + base + ext
+		geth     = "gfeath-" + base + ext
+		alltools = "gfeath-alltools-" + base + ext
 	)
 	maybeSkipArchive(env)
 	if err := build.WriteArchive(geth, gethArchiveFiles); err != nil {
@@ -540,7 +540,7 @@ type debExecutable struct {
 func newDebMetadata(distro, author string, env build.Environment, t time.Time) debMetadata {
 	if author == "" {
 		// No signing key, use default author.
-		author = "Ethereum Builds <fjl@ethereum.org>"
+		author = "Feathereum Builds <builds@feathereum.org>"
 	}
 	return debMetadata{
 		Env:         env,
@@ -556,9 +556,9 @@ func newDebMetadata(distro, author string, env build.Environment, t time.Time) d
 // on all executable packages.
 func (meta debMetadata) Name() string {
 	if isUnstableBuild(meta.Env) {
-		return "ethereum-unstable"
+		return "feathereum-unstable"
 	}
-	return "ethereum"
+	return "feathereum"
 }
 
 // VersionString returns the debian version of the packages.
@@ -661,7 +661,7 @@ func doWindowsInstaller(cmdline []string) {
 			continue
 		}
 		allTools = append(allTools, filepath.Base(file))
-		if filepath.Base(file) == "geth.exe" {
+		if filepath.Base(file) == "gfeath.exe" {
 			gethTool = file
 		} else {
 			devTools = append(devTools, file)
@@ -690,7 +690,7 @@ func doWindowsInstaller(cmdline []string) {
 	if env.Commit != "" {
 		version[2] += "-" + env.Commit[:8]
 	}
-	installer, _ := filepath.Abs("geth-" + archiveBasename(*arch, env) + ".exe")
+	installer, _ := filepath.Abs("gfeath-" + archiveBasename(*arch, env) + ".exe")
 	build.MustRunCommand("makensis.exe",
 		"/DOUTPUTFILE="+installer,
 		"/DMAJORVERSION="+version[0],
@@ -732,7 +732,7 @@ func doAndroidArchive(cmdline []string) {
 
 	if *local {
 		// If we're building locally, copy bundle to build dir and skip Maven
-		os.Rename("geth.aar", filepath.Join(GOBIN, "geth.aar"))
+		os.Rename("gfeath.aar", filepath.Join(GOBIN, "gfeath.aar"))
 		return
 	}
 	meta := newMavenMetadata(env)
@@ -742,8 +742,8 @@ func doAndroidArchive(cmdline []string) {
 	maybeSkipArchive(env)
 
 	// Sign and upload the archive to Azure
-	archive := "geth-" + archiveBasename("android", env) + ".aar"
-	os.Rename("geth.aar", archive)
+	archive := "gfeath-" + archiveBasename("android", env) + ".aar"
+	os.Rename("gfeath.aar", archive)
 
 	if err := archiveUpload(archive, *upload, *signer); err != nil {
 		log.Fatal(err)
@@ -828,7 +828,7 @@ func newMavenMetadata(env build.Environment) mavenMetadata {
 	}
 	return mavenMetadata{
 		Version:      version,
-		Package:      "geth-" + version,
+		Package:      "gfeath-" + version,
 		Develop:      isUnstableBuild(env),
 		Contributors: contribs,
 	}
@@ -857,7 +857,7 @@ func doXCodeFramework(cmdline []string) {
 		build.MustRun(bind)
 		return
 	}
-	archive := "geth-" + archiveBasename("ios", env)
+	archive := "gfeath-" + archiveBasename("ios", env)
 	if err := os.Mkdir(archive, os.ModePerm); err != nil {
 		log.Fatal(err)
 	}
@@ -875,8 +875,8 @@ func doXCodeFramework(cmdline []string) {
 	// Prepare and upload a PodSpec to CocoaPods
 	if *deploy != "" {
 		meta := newPodMetadata(env, archive)
-		build.Render("build/pod.podspec", "Geth.podspec", 0755, meta)
-		build.MustRunCommand("pod", *deploy, "push", "Geth.podspec", "--allow-warnings", "--verbose")
+		build.Render("build/pod.podspec", "Gfeath.podspec", 0755, meta)
+		build.MustRunCommand("pod", *deploy, "push", "Gfeath.podspec", "--allow-warnings", "--verbose")
 	}
 }
 
