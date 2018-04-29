@@ -355,6 +355,10 @@ func calcDifficultyByzantium(time uint64, parent *types.Header) *big.Int {
 	if x.Cmp(params.MinimumDifficulty) < 0 {
 		x.Set(params.MinimumDifficulty)
 	}
+	// Feathereum change
+	// Disable bomb
+	/*
+
 	// calculate a fake block number for the ice-age delay:
 	//   https://github.com/ethereum/EIPs/pull/669
 	//   fake_block_number = min(0, block.number - 3_000_000
@@ -373,6 +377,8 @@ func calcDifficultyByzantium(time uint64, parent *types.Header) *big.Int {
 		y.Exp(big2, y, nil)
 		x.Add(x, y)
 	}
+	*/
+	// Feathereum change end
 	return x
 }
 
@@ -411,6 +417,9 @@ func calcDifficultyHomestead(time uint64, parent *types.Header) *big.Int {
 	if x.Cmp(params.MinimumDifficulty) < 0 {
 		x.Set(params.MinimumDifficulty)
 	}
+	// Feathereum change
+	// This should not be used, removing bomb
+	/*
 	// for the exponential factor
 	periodCount := new(big.Int).Add(parent.Number, big1)
 	periodCount.Div(periodCount, expDiffPeriod)
@@ -422,6 +431,8 @@ func calcDifficultyHomestead(time uint64, parent *types.Header) *big.Int {
 		y.Exp(big2, y, nil)
 		x.Add(x, y)
 	}
+	*/
+	// Feathereum change end
 	return x
 }
 
@@ -528,17 +539,62 @@ var (
 	big32 = big.NewInt(32)
 )
 
+// Feathereum change
+var (
+	BlocksPerPhase         *big.Int = big.NewInt(172800) // Phase is the most small time period on reward change, average duration is 1 month (=30days)
+	//BlocksPerPhase *big.Int = big.NewInt(5)
+	RewardFirstPeriod      *big.Int = big.NewInt(3e+18)  // Block reward of phase 1 of kickstart era
+	KickstartSecondPhase   *big.Int = big.NewInt(2)      // Kickstart 2 start phase number
+	RewardSecondPeriod     *big.Int = big.NewInt(2e+18)  // Block reward of phase 2 of kickstart era
+	CurvedRewardPhase      *big.Int = big.NewInt(7)      // Phase curved reward era start from
+	CurvedEraRewardBase    *big.Int = big.NewInt(1e+18)  // Base reward on Curved reward era
+	MajorityWeight         *big.Int = big.NewInt(22)     // Higher the number is, reward decreases less between phases
+	EarlyMajorityAdvantage *big.Int = big.NewInt(3)      // Give reward advantage to early majority (give more coins to them)
+	CurveVariable          *big.Int = new(big.Int).Exp(MajorityWeight, EarlyMajorityAdvantage, nil)	// Just a pre-calculated variable
+)
+// Feathereum change end
+
 // AccumulateRewards credits the coinbase of the given block with the mining
 // reward. The total reward consists of the static block reward and rewards for
 // included uncles. The coinbase of each uncle block is also rewarded.
 func accumulateRewards(config *params.ChainConfig, state *state.StateDB, header *types.Header, uncles []*types.Header) {
-	// Select the correct block reward based on chain progression
-	blockReward := FrontierBlockReward
-	if config.IsByzantium(header.Number) {
-		blockReward = ByzantiumBlockReward
-	}
 	// Accumulate the rewards for the miner and any included uncles
+	// Feathereum change
+	// Implementing reward decrease
+
+	// Calculate phase the block on
+	rewardPhase := new(big.Int).Set(header.Number)
+	rewardPhase.Sub(rewardPhase, big1)	// Phase should end at header.Number % BlocksPerPhase == 0
+	rewardPhase.Div(rewardPhase, BlocksPerPhase)
+
+	// Basic block reward for the phase
+	var blockReward *big.Int
+
+	if rewardPhase.Cmp(CurvedRewardPhase) >= 0 {
+		// Curved reward era
+
+		blockReward = new(big.Int).Set(CurvedEraRewardBase)	// Basic reward on curved reward era
+		blockReward.Mul(blockReward, CurveVariable)
+
+		denominator := new(big.Int).Set(rewardPhase);
+		denominator.Sub(denominator, CurvedRewardPhase)	// Phase curved reward era start is the origin (Reward Level - 1)
+		denominator.Exp(denominator, EarlyMajorityAdvantage, nil)
+		denominator.Add(denominator, CurveVariable)
+
+		blockReward.Div(blockReward, denominator)	// Divide it to get current reward
+	} else if rewardPhase.Cmp(KickstartSecondPhase) >= 0 {
+		// Kickstart second period
+		blockReward = RewardSecondPeriod
+	} else {
+		// Kickstart first period
+		blockReward = RewardFirstPeriod
+	}
+
 	reward := new(big.Int).Set(blockReward)
+
+	// reward variable will be act as base number for calculating uncle rewards
+	// Feathereum change end
+
 	r := new(big.Int)
 	for _, uncle := range uncles {
 		r.Add(uncle.Number, big8)
