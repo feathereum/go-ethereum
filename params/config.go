@@ -33,7 +33,7 @@ var (
 	MainnetChainConfig = &ChainConfig{
 		ChainId:             big.NewInt(1),
 		HomesteadBlock:      big.NewInt(0),
-		DAOForkBlock:        big.NewInt(0),
+		DAOForkBlock:        nil,
 		DAOForkSupport:      true,
 		EIP150Block:         big.NewInt(0),
 		EIP150Hash:          common.HexToHash("0xc685f17908c82ea74bafc7a58c3582e3cafb90b16faaa3ce7ba6d931c33d1aa7"),	// Dummy hash
