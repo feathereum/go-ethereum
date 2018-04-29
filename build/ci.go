@@ -253,6 +253,7 @@ func buildFlags(env build.Environment) (flags []string) {
 	if len(ld) > 0 {
 		flags = append(flags, "-ldflags", strings.Join(ld, " "))
 	}
+
 	return flags
 }
 
@@ -939,7 +940,8 @@ func doXgo(cmdline []string) {
 	build.MustRun(gogetxgo)
 
 	// If all tools building is requested, build everything the builder wants
-	args := append(buildFlags(env), flag.Args()...)
+	// To change prefix of output binary name, append -out option
+	args := append(append(buildFlags(env), "-out", "gfeath"), flag.Args()...)
 
 	if *alltools {
 		args = append(args, []string{"--dest", GOBIN}...)

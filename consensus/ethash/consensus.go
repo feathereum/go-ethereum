@@ -34,7 +34,7 @@ import (
 	set "gopkg.in/fatih/set.v0"
 )
 
-// Ethash proof-of-work protocol constants.
+// Ethash proof-of-work protocol constants, and Feathereum one.
 var (
 	FrontierBlockReward    *big.Int = big.NewInt(5e+18) // Block reward in wei for successfully mining a block
 	ByzantiumBlockReward   *big.Int = big.NewInt(3e+18) // Block reward in wei for successfully mining a block upward from Byzantium

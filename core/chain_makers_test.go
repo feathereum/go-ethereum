@@ -92,9 +92,10 @@ func ExampleGenerateChain() {
 	fmt.Println("balance of addr1:", state.GetBalance(addr1))
 	fmt.Println("balance of addr2:", state.GetBalance(addr2))
 	fmt.Println("balance of addr3:", state.GetBalance(addr3))
+	// Feathereum change: address3 have mined 3 blocks and uncles including in block3 * 2 + mining uncle of block 2
 	// Output:
 	// last block: #5
 	// balance of addr1: 989000
 	// balance of addr2: 10000
-	// balance of addr3: 19687500000000001000
+	// balance of addr3: 11812500000000001000
 }

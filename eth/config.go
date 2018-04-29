@@ -67,9 +67,9 @@ func init() {
 		}
 	}
 	if runtime.GOOS == "windows" {
-		DefaultConfig.Ethash.DatasetDir = filepath.Join(home, "AppData", "Feath-Ethash")
+		DefaultConfig.Ethash.DatasetDir = filepath.Join(home, "AppData", "Gfeath-Ethash")
 	} else {
-		DefaultConfig.Ethash.DatasetDir = filepath.Join(home, ".feath-ethash")
+		DefaultConfig.Ethash.DatasetDir = filepath.Join(home, ".gfeath-ethash")
 	}
 }
 
